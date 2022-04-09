@@ -1,0 +1,20 @@
+{
+  "name": "api",
+  "version": "0.0.1",
+  "description": "API referente ao projeto final do treinamento de React, Redux e Native de Abril/2022",
+  "main": "src/app",
+  "private": "true",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "start": "nodemon"
+  },
+  "author": "Rafael Thomazelli Mazzucato",
+  "dependencies": {
+    "express": "^4.17.3",
+    "node-restful": "^0.2.6",
+    "mongoose": "~4"
+  },
+  "devDependencies": {
+    "nodemon": "^2.0.15"
+  }
+}
