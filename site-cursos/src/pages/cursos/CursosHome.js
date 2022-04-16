@@ -1,5 +1,5 @@
 
-import React, { useEffect, useState } from 'react';
+import React, { useState } from 'react';
 import { Cabecalho } from '../../components/Cabecalho';
 import { CursosFormulario } from '../../components/cursos/Formulario';
 import { CursosListagem } from '../../components/cursos/Listagem';
@@ -10,7 +10,6 @@ const URL = 'http://localhost:3200/api/cursos';
 
 export const CursosHome = () => {
 
-    const [cursos, setCursos] = useState([]);
     const [codigo, setCodigo] = useState(0);
     const [id, setId] = useState('');
     const [isCodigoValido, setIsCodigoValido] = useState(true);
@@ -25,43 +24,6 @@ export const CursosHome = () => {
             return setIsCodigoValido(true);
         }
         setIsCodigoValido(false);
-    }
-
-
-    const getCursos = async () => {
-        try {
-            const response = await axios.get(URL);
-            if (response && response.data) {
-                setCursos(response.data);
-            }
-        } catch (e) {
-            console.log('Ocorreu erro ao listar cursos.', e);
-        }
-    }
-
-    useEffect(() => {
-        getCursos();
-    }, []);
-
-    const confirmarExclusao = (curso) => {  
-        Swal.fire({
-            title: `Você deseja realmente excluir o curso ${curso.codigo} selecionado?`,
-            showCancelButton: true,
-            confirmButtonText: 'Excluir',
-            cancelButtonText: `Cancelar`,
-        }).then(async (result) => {
-            if (result.isConfirmed) {
-                try{
-                    await axios.delete(URL+'/'+ curso._id);
-                    await getCursos();
-                    Swal.fire('Curso excluído com sucesso!', '', 'success');
-                }catch(e){
-                    console.log(e);
-                    Swal.fire('Não foi possível excluir curso!', '', 'error');
-                }
-                
-            }
-        });
     }
 
     const selecionarCurso = curso =>{
@@ -120,7 +82,7 @@ export const CursosHome = () => {
                 await axios.post(URL, body);
             }
             
-            await getCursos();
+            //await getCursos();
             limpar();
             Swal.fire(`Curso ${id ? 'alterado' : 'adicionado'} com sucesso!`, '', 'success');
         }catch(e){
@@ -129,16 +91,12 @@ export const CursosHome = () => {
         }
     }
 
-
-
-
     return (
         <div className='container'>
             <Cabecalho titulo="Cursos" subtitulo="cadastro de cursos" />
             <div className="row border-bottom">
                 <div className="col-md-6">
                     <CursosFormulario 
-                        codigo={codigo}
                         descricao={descricao}
                         cargaHoraria={cargaHoraria}
                         preco={preco}
@@ -147,7 +105,6 @@ export const CursosHome = () => {
 
                         isCodigoValido={isCodigoValido}
 
-                        alterarCodigo={alterarCodigo}
                         setDescricao={setDescricao}
                         setCargaHoraria={setCargaHoraria}
                         setPreco={setPreco}
@@ -159,8 +116,6 @@ export const CursosHome = () => {
                 </div>
                 <div className="col-md-6">
                     <CursosListagem 
-                        cursos={cursos}
-                        confirmarExclusao={confirmarExclusao}
                         selecionarCurso={selecionarCurso} />
                 </div>
             </div>

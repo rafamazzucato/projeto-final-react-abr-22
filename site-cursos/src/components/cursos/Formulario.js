@@ -1,6 +1,11 @@
 import React from 'react';
+import {connect} from 'react-redux';
+import {bindActionCreators} from 'redux';
+import {
+    setCodigo
+} from '../../store/actions/cursos';
 
-export const CursosFormulario = props => {
+const CursosFormulario = props => {
 
     const { 
         id,
@@ -10,9 +15,7 @@ export const CursosFormulario = props => {
         preco,
         categoria,
 
-        isCodigoValido,
-
-        alterarCodigo,
+        setCodigo,
         setDescricao,
         setCargaHoraria,
         setPreco,
@@ -22,7 +25,6 @@ export const CursosFormulario = props => {
         salvarCurso
     
     } = props;
-
 
     return (
         <div className="border-right pl-3 pr-3">
@@ -36,9 +38,8 @@ export const CursosFormulario = props => {
                     <div className="col-sm-9">
                         <input type="number"
                             value={codigo}
-                            onChange={e => alterarCodigo(e.target.value)}
+                            onChange={setCodigo}
                             className="form-control mb-1" id="codigo" />
-                        {!isCodigoValido && <span className='alert-danger mt'>Codigo tem que ser maior que 4</span>}
                     </div>
                 </div>
                 <div className="form-group row">
@@ -94,7 +95,6 @@ export const CursosFormulario = props => {
                 <div className="form-group row">
                     <button
                         type='button'
-                        disabled={!isCodigoValido}
                         onClick={salvarCurso}
                         className="btn btn-primary ml-3 mb-3">
                         {id ? 'Alterar' : 'Adicionar'}
@@ -110,3 +110,15 @@ export const CursosFormulario = props => {
         </div>
     );
 }
+
+const mapStoreToProps = store => ({
+    codigo : store.cursos.codigo
+});
+
+const mapActionsToProps = dispatch => bindActionCreators({
+    setCodigo
+}, dispatch);
+
+const conectado = connect(mapStoreToProps, mapActionsToProps)(CursosFormulario);
+
+export { conectado as CursosFormulario}
