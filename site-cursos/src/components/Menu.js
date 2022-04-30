@@ -1,29 +1,10 @@
-import React, {useState, useEffect} from 'react';
+import React from 'react';
 import { Link } from 'react-router-dom';
-import axios from 'axios';
+import { connect } from 'react-redux';
 
-const URL = 'http://localhost:3200/api/cursos';
+const Menu = props => {
+    const {cursos} = props;
 
-export const Menu = () => {
-
-    const [cursos, setCursos] = useState([]);
-
-    const getCursos = async () => {
-        try {
-            const response = await axios.get(URL);
-            if (response && response.data) {
-                setCursos(response.data);
-            }
-        } catch (e) {
-            console.log('Ocorreu erro ao listar cursos.', e);
-        }
-    }
-
-    useEffect(() => {
-        getCursos();
-    }, []);
-
-    
     return (
         <nav className="navbar navbar-expand-lg navbar-light bg-light">
             <Link className="navbar-brand" to="/">
@@ -51,3 +32,11 @@ export const Menu = () => {
         </nav>
     );
 }
+
+const mapStoreToProps = store => ({
+    cursos : store.cursos.lista
+});
+
+const conectado = connect(mapStoreToProps, null)(Menu);
+
+export { conectado as Menu};

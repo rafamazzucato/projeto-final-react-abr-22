@@ -5,7 +5,7 @@ import { CursosListagem } from '../../components/cursos/Listagem';
 export const Home = () => {
     return (
         <div className='container'>
-            <CursosListagem />
+            <CursosListagem isAdmin={false} />
         </div>
     );
 }

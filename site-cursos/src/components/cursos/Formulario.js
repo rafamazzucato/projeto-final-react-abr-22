@@ -2,7 +2,13 @@ import React from 'react';
 import {connect} from 'react-redux';
 import {bindActionCreators} from 'redux';
 import {
-    setCodigo
+    setCodigo,
+    setDescricao,
+    setCargaHoraria,
+    setPreco,
+    setCategoria,
+    limpar,
+    salvar
 } from '../../store/actions/cursos';
 
 const CursosFormulario = props => {
@@ -22,7 +28,7 @@ const CursosFormulario = props => {
         setCategoria,
 
         limpar,
-        salvarCurso
+        salvar
     
     } = props;
 
@@ -50,7 +56,7 @@ const CursosFormulario = props => {
                     <div className="col-sm-9">
                         <input type="text"
                             value={descricao}
-                            onChange={e => setDescricao(e.target.value)}
+                            onChange={setDescricao}
                             className="form-control" id="descricao" />
                     </div>
                 </div>
@@ -61,7 +67,7 @@ const CursosFormulario = props => {
                     <div className="col-sm-9">
                         <input type="number"
                             value={cargaHoraria}
-                            onChange={e => setCargaHoraria(e.target.value)}
+                            onChange={setCargaHoraria}
                             className="form-control" id="cargaHoraria" />
                     </div>
                 </div>
@@ -73,7 +79,7 @@ const CursosFormulario = props => {
                     <div className="col-sm-9">
                         <input type="number"
                             value={preco}
-                            onChange={e => setPreco(e.target.value)}
+                            onChange={setPreco}
                             className="form-control" id="preco" />
                     </div>
                 </div>
@@ -84,7 +90,7 @@ const CursosFormulario = props => {
                     <div className="col-sm-9">
                         <select className="form-control" id="categoria" 
                             value={categoria}
-                            onChange={e => setCategoria(e.target.value)}>
+                            onChange={setCategoria}>
                             <option>INFORMATICA</option>
                             <option>ENGENHARIA</option>
                             <option>ADMINISTRACAO</option>
@@ -95,7 +101,7 @@ const CursosFormulario = props => {
                 <div className="form-group row">
                     <button
                         type='button'
-                        onClick={salvarCurso}
+                        onClick={() => salvar(id, codigo, descricao, cargaHoraria, preco, categoria)}
                         className="btn btn-primary ml-3 mb-3">
                         {id ? 'Alterar' : 'Adicionar'}
                     </button>
@@ -112,11 +118,22 @@ const CursosFormulario = props => {
 }
 
 const mapStoreToProps = store => ({
-    codigo : store.cursos.codigo
+    codigo : store.cursos.codigo,
+    descricao : store.cursos.descricao,
+    cargaHoraria : store.cursos.cargaHoraria,
+    preco : store.cursos.preco,
+    categoria : store.cursos.categoria,
+    id : store.cursos._id,
 });
 
 const mapActionsToProps = dispatch => bindActionCreators({
-    setCodigo
+    setCodigo,
+    setDescricao,
+    setCargaHoraria,
+    setPreco,
+    setCategoria,
+    limpar,
+    salvar
 }, dispatch);
 
 const conectado = connect(mapStoreToProps, mapActionsToProps)(CursosFormulario);

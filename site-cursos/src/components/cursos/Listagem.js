@@ -1,33 +1,41 @@
-import React, {useEffect} from 'react';
-import {connect} from 'react-redux';
-import {bindActionCreators} from 'redux';
+import React, { useEffect } from 'react';
+import { connect } from 'react-redux';
+import { bindActionCreators } from 'redux';
 import {
     getCursos,
-    excluirCurso
+    excluirCurso,
+    selecionarCurso
 } from '../../store/actions/cursos';
 
 const CursosListagem = props => {
-    const {getCursos, excluirCurso, cursos} = props;
+    const { getCursos, excluirCurso, cursos, selecionarCurso, isAdmin } = props;
 
     useEffect(() => {
         getCursos();
     }, []);
 
     const exibirLinhas = () => {
-        
         return cursos?.map(curso => (
             <tr key={curso._id}>
                 <td>{curso.codigo}</td>
                 <td className="col-sm-7">{curso.descricao}</td>
-                <td >
-                    <button className="btn btn-success" //onClick={() => selecionarCurso(curso)}
-                    >
-                        <i className="fa fa-edit"></i>
-                    </button>
-                    <button className="btn btn-danger ml-2" onClick={() => excluirCurso(curso)}>
-                        <i className="fa fa-trash-o"></i>
-                    </button>
-                </td>
+                {isAdmin ?
+                    <td >
+                        <button className="btn btn-success" onClick={() => selecionarCurso(curso)}
+                        >
+                            <i className="fa fa-edit"></i>
+                        </button>
+                        <button className="btn btn-danger ml-2" onClick={() => excluirCurso(curso)}>
+                            <i className="fa fa-trash-o"></i>
+                        </button>
+                    </td>
+                    :
+                    <>
+                        <td>{curso.cargaHoraria}</td>
+                        <td>{curso.preco}</td>
+                        <td>{curso.categoria}</td>
+                    </>
+                }
             </tr>
         ));
     }
@@ -40,7 +48,13 @@ const CursosListagem = props => {
                     <tr>
                         <th>Código</th>
                         <th className="col-sm-7">Descrição</th>
-                        <th></th>
+                        {isAdmin ? <th></th> :
+                            <>
+                                <th>Carga Horária</th>
+                                <th>Preço</th>
+                                <th>Categoria</th>
+                            </>
+                        }
                     </tr>
                 </thead>
                 <tbody>
@@ -57,8 +71,9 @@ const mapStoreToProps = store => ({
 
 const mapActionsToProps = dispatch => bindActionCreators({
     getCursos,
-    excluirCurso
+    excluirCurso,
+    selecionarCurso
 }, dispatch);
 
 const conectado = connect(mapStoreToProps, mapActionsToProps)(CursosListagem);
-export {conectado as CursosListagem}
+export { conectado as CursosListagem }
